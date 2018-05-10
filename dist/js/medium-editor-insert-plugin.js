@@ -1176,9 +1176,9 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
                 }
 
                 if (pasted) {
-                    $.proxy(that, 'embed', html, url)();
+                    $.proxy(that, 'embed', html, url, data)();
                 } else {
-                    $.proxy(that, 'embed', html)();
+                    $.proxy(that, 'embed', html, null, data)();
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -1239,14 +1239,29 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
     };
 
     /**
+     * Call oembed complete callback
+     *
+     * @param {object} $place
+     * @param {string} oembedData
+     * @return {void}
+     */
+
+    Embeds.prototype.oembedCompleted = function ($place, oembedData) {
+        if (this.options.oembedCompleted && oembedData) {
+            this.options.oembedCompleted($place, oembedData);
+        }
+    };
+
+    /**
      * Add html to page
      *
      * @param {string} html
      * @param {string} pastedUrl
+     * @param {string} oembedData
      * @return {void}
      */
 
-    Embeds.prototype.embed = function (html, pastedUrl) {
+    Embeds.prototype.embed = function (html, pastedUrl, oembedData) {
         var $place = this.$el.find('.medium-insert-embeds-active'),
             $div;
 
@@ -1275,14 +1290,15 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
                 $place.after(this.templates['src/js/templates/embeds-wrapper.hbs']({
                     html: html
                 }));
+                this.oembedCompleted($place, oembedData);
                 $place.text($place.text().replace(pastedUrl, ''));
             } else {
                 $place.after(this.templates['src/js/templates/embeds-wrapper.hbs']({
                     html: html
                 }));
+                this.oembedCompleted($place, oembedData);
                 $place.remove();
             }
-
 
             this.core.triggerInput();
 
