@@ -1241,14 +1241,14 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
     /**
      * Call oembed complete callback
      *
-     * @param {object} $place
+     * @param {object} $embed
      * @param {string} oembedData
      * @return {void}
      */
 
-    Embeds.prototype.oembedCompleted = function ($place, oembedData) {
+    Embeds.prototype.oembedCompleted = function ($embed, oembedData) {
         if (this.options.oembedCompleted && oembedData) {
-            this.options.oembedCompleted($place, oembedData);
+            this.options.oembedCompleted($embed, oembedData);
         }
     };
 
@@ -1414,6 +1414,10 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 
             if ($embed.length) {
                 e.preventDefault();
+
+                if (this.options.beforeRemove) {
+                    this.options.beforeRemove($embed);
+                }
 
                 $('.medium-insert-embeds-toolbar, .medium-insert-embeds-toolbar2').remove();
 

@@ -421,7 +421,7 @@
 
     Embeds.prototype.oembedCompleted = function ($embed, oembedData) {
         if (this.options.oembedCompleted && oembedData) {
-            this.options.oembedCompleted($place, oembedData);
+            this.options.oembedCompleted($embed, oembedData);
         }
     };
 
@@ -587,6 +587,10 @@
 
             if ($embed.length) {
                 e.preventDefault();
+
+                if (this.options.beforeRemove) {
+                    this.options.beforeRemove($embed);
+                }
 
                 $('.medium-insert-embeds-toolbar, .medium-insert-embeds-toolbar2').remove();
 
