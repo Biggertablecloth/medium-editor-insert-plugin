@@ -44,7 +44,7 @@
     "noempty": false,
     "nonew": false,
     "plusplus": false,
-    "undef": true,
+    "undef": false,
     "sub": true,
     "strict": false,
     "unused": true
