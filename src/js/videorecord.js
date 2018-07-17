@@ -121,9 +121,8 @@ function attachZiggeoEvent(recorder) {
                 '<ziggeorecorder ' +
                     'application="8a6794d0411834351170bfdaf35259a2" ' +
                     'id="video-recorder-' + recorder.id + '" ' +
-                    'ziggeo-timelimit=1500 ' +
-                    'ziggeo-width=320 ' +
-                    'ziggeo-height=240 ' +
+                    'ziggeo-timelimit=300 ' +
+                    'ziggeo-responsive ' +
                 '>' +
                 '</ziggeorecorder> ' +
             '</div>'
