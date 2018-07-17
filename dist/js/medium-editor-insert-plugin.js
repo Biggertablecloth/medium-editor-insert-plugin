@@ -2389,23 +2389,53 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 
 var recorders = [];
 
+function fancyTimeFormat(time) {
+    if (!time || time === Infinity) {
+        return '';
+    }
+
+    var mins = ~~((time % 3600) / 60);
+    var secs = time % 60;
+
+    // Output like "1:01" or "4 seconds"
+    var ret = "";
+
+    if (mins === 0) {
+        return secs + " seconds long. ";
+    }
+
+    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+    ret += "" + secs + " long. ";
+    return ret;
+}
+
 function onVideoRecorded(recorder) {
     if (!recorder.state) return;
     var video = recorder.state.get('video');
     var videoUrl = ZiggeoApi.Videos.source(video);
     var thumbUrl = ZiggeoApi.Videos.image(video);
+    var id = recorder.id;
     recorder.place.html(
         '<div> ' +
             '<div style="text-align: center;"> ' +
-                '<video controls style="max-width: 100%;" src="' + videoUrl + '"></video> ' +
+                '<video id="video-' + id + '" controls style="max-width: 100%;" src="' + videoUrl + '"></video> ' +
             '</div> ' +
-            '<a class="video-thumbnail"> ' +
-                '<img src="' + thumbUrl + '" style="max-width: 100%;"/> ' +
+            '<a class="video-thumbnail" style="text-decoration: none; color: #999;"> ' +
+                '<figure> ' +
+                    '<img src="' + thumbUrl + '" style="max-width: 100%;"/> ' +
+                    '<figcaption id="caption-' + id + '"></figcaption> ' +
+                '</figure> ' +
             '</a>' +
         '</div></br>'
     );
-    this.core.clean();
-    this.core.triggerInput();
+    var videoElem = document.getElementById("video-" + id);
+    videoElem.addEventListener('durationchange', function () {
+        var time = Math.ceil(videoElem.duration);
+        time = fancyTimeFormat(time);
+        $('#caption-' + id).text(
+            'Video Recording. ' + time + 'Click here to watch.'
+        );
+    });
 }
 
 function attachZiggeoEvent(recorder) {
@@ -2495,7 +2525,7 @@ function attachZiggeoEvent(recorder) {
     Videorecording.prototype.add = function () {
         var $place = this.$el.find('.medium-insert-active');
         var recorder = {
-            id: recorders.length,
+            id: Math.floor(Math.random() * 1000000),
             place: $place
         };
 
