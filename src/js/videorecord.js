@@ -20,6 +20,27 @@ function fancyTimeFormat(time) {
     return ret;
 }
 
+function waitForEl(selector, callback) {
+    if (jQuery(selector).length) {
+        callback();
+    } else {
+        setTimeout(function () {
+            waitForEl(selector, callback);
+        }, 100);
+    }
+}
+
+function addCaption(id) {
+    var videoElem = document.getElementById("video-" + id);
+    videoElem.addEventListener('durationchange', function () {
+        var time = Math.ceil(videoElem.duration);
+        time = fancyTimeFormat(time);
+        $('#caption-' + id).text(
+            'Video Recording. ' + time + 'Click here to watch.'
+        );
+    });
+}
+
 function onVideoRecorded(recorder) {
     if (!recorder.state) return;
     var video = recorder.state.get('video');
@@ -39,13 +60,8 @@ function onVideoRecorded(recorder) {
             '</a>' +
         '</div></br>'
     );
-    var videoElem = document.getElementById("video-" + id);
-    videoElem.addEventListener('durationchange', function () {
-        var time = Math.ceil(videoElem.duration);
-        time = fancyTimeFormat(time);
-        $('#caption-' + id).text(
-            'Video Recording. ' + time + 'Click here to watch.'
-        );
+    waitForEl("#video-" + id, function () {
+        addCaption(id);
     });
 }
 
