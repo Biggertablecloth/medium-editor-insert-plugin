@@ -2388,7 +2388,6 @@ this["MediumInsert"]["Templates"]["src/js/templates/images-toolbar.hbs"] = Handl
 })(jQuery, window, document, MediumEditor.util);
 
 var recorders = [];
-var ziggeoInstance;
 
 function fancyTimeFormat(time) {
     if (!time || time === Infinity) {
@@ -2434,8 +2433,8 @@ function addCaption(id) {
 function onVideoRecorded(recorder) {
     if (!recorder.state) return;
     var video = recorder.state.get('video');
-    var videoUrl = ziggeoInstance.videos.videoUrl(video);
-    var thumbUrl = ziggeoInstance.videos.imageUrl(video);
+    var videoUrl = ZiggeoApi.Videos.source(video);
+    var thumbUrl = ZiggeoApi.Videos.image(video);
     var id = recorder.id;
     recorder.place.html(
         '<div> ' +
@@ -2457,6 +2456,7 @@ function onVideoRecorded(recorder) {
 
 function attachZiggeoEvent(recorder) {
     var element = document.getElementById('video-recorder-' + recorder.id);
+    ZiggeoApi.token = '8a6794d0411834351170bfdaf35259a2';
     recorder.state = ZiggeoApi.V2.Recorder.findByElement(element);
     if (!recorder.state || recorder.hasEvent) return;
     recorder.state.on("verified", function () {
@@ -2570,9 +2570,6 @@ function attachZiggeoEvent(recorder) {
     /** Addon initialization */
 
     $.fn[pluginName + addonName] = function (options) {
-        ziggeoInstance = new ZiggeoApi.V2.Application({
-            token: "8a6794d0411834351170bfdaf35259a2"
-        });
         return this.each(function () {
             if (!$.data(this, 'plugin_' + pluginName + addonName)) {
                 $.data(this, 'plugin_' + pluginName + addonName, new Videorecording(this, options));
