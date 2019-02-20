@@ -1,8 +1,8 @@
-/*! 
+/*!
  * medium-editor-insert-plugin v2.5.0 - jQuery insert plugin for MediumEditor
  *
  * http://linkesch.com/medium-editor-insert-plugin
- * 
+ *
  * Copyright (c) 2014 Pavel Linkesch (http://linkesch.com)
  * Released under the MIT license
  */
@@ -2473,7 +2473,7 @@ function attachZiggeoEvent(recorder) {
     var pluginName = 'mediumInsert',
         addonName = 'Videorecording', // first char is uppercase
         defaults = {
-            label: '<span class="fa fa-video-camera"></span>'
+            label: '<span class="fa fa-video"></span>'
         };
 
     /**
