@@ -2473,7 +2473,7 @@ function attachZiggeoEvent(recorder) {
     var pluginName = 'mediumInsert',
         addonName = 'Videorecording', // first char is uppercase
         defaults = {
-            label: '<span class="fa fa-video"></span>'
+            label: '<span class="material-icons">videocam</span>'
         };
 
     /**
