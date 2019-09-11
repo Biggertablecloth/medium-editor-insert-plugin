@@ -9,7 +9,6 @@
             enabled: true,
             addons: {
                 images: true, // boolean or object containing configuration
-                videorecording: true,
                 embeds: true
             }
         };
